@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: ./deploy/Dockerfile.backend
+    container_name: healthcare_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../data:/app/data       # To store SQLite database persistently
+    env_file:
+      - ../.env                 # Load environment variables from root .env file
+    networks:
+      - healthcare_network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: ./deploy/Dockerfile.frontend
+    container_name: healthcare_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    env_file:
+      - ../.env                 # Load environment variables from root .env file
+    networks:
+      - healthcare_network
+    restart: unless-stopped
+
+networks:
+  healthcare_network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local

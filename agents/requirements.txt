@@ -1,0 +1,7 @@
+agno
+fastapi
+uvicorn
+groq
+faker
+pydantic
+python-multipart

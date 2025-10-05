@@ -1,0 +1,23 @@
+# Use a Node LTS base image
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files first for better layer caching
+COPY ./frontend/package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy all frontend files
+COPY ./frontend .
+
+# Build the app for production
+RUN npm run build
+
+# Expose port 3000
+EXPOSE 3000
+
+# Run the Next.js app
+CMD ["npm", "start"]
