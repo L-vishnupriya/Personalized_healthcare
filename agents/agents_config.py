@@ -7,18 +7,17 @@ from tools import (
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
-# --- LLM Setup: Use GROQ for speed ---
-# GROQ_API_KEY must be set in the environment
+
+# GROQ_API_KEY 
 LLM = Groq(
     id="llama-3.1-8b-instant",  # Using a smaller, faster model to avoid rate limits
     api_key=os.getenv("GROQ_API_KEY"),  # Load from environment
     temperature=0.3
 )
 
-# --- Agent Definitions ---
+# --- Agents ---
 
 # 1. Greeting Agent - Validates user ID and greets personally
 greeting_agent = Agent(

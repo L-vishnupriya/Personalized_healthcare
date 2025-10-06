@@ -7,7 +7,7 @@ from typing import List, Dict, Any
 import os
 DB_PATH = os.path.join(os.path.dirname(__file__), "users.db") 
 
-# --- Pydantic models for cleaner data handling would be added here ---
+
 
 def create_and_populate_db():
     """Initializes the SQLite DB and populates 100 synthetic user records."""
@@ -27,7 +27,7 @@ def create_and_populate_db():
         )
     """)
 
-    # 2. Logs Table (For CGM and Mood)
+    # 2. Logs Table 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS logs (
             log_id INTEGER PRIMARY KEY,
@@ -104,5 +104,4 @@ def log_data(user_id: int, log_type: str, value: str):
     conn.commit()
     conn.close()
 
-# --- Run on startup ---
-# create_and_populate_db() # This will be called on Docker entry point
+

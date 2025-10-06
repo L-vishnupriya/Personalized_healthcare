@@ -31,7 +31,7 @@ def log_cgm_reading(user_id: int, glucose_reading: int) -> str:
     return alert
 
 
-# --- Tool 3: Food Intake & Macro Estimation (LLM Tool) ---
+# --- Tool 3: Food Intake & Macro Estimation ---
 @tool
 def record_food_and_estimate_macros(user_id: int, meal_description: str, timestamp: Optional[str] = None) -> str:
     """
@@ -41,9 +41,7 @@ def record_food_and_estimate_macros(user_id: int, meal_description: str, timesta
         import datetime
         timestamp = datetime.datetime.now().isoformat()
         
-    # NOTE: The LLM agent will use its own model call to categorize macros 
-    # based on the meal_description BEFORE or AFTER calling this tool.
-    # For a simplified Agno tool, this function just logs it:
+   
     log_data(user_id, "food", f"{timestamp}: {meal_description}")
     
     return f"Meal '{meal_description}' logged successfully at {timestamp}. Ready for macro estimation."
@@ -146,12 +144,12 @@ def generate_adaptive_meal_plan(user_id: int, dietary_preference: str, medical_c
     
     # Add glucose management tips
     if latest_cgm and latest_cgm > 150:
-        meal_plan += "⚠️ Glucose Management Tips:\n"
+        meal_plan += "Glucose Management Tips:\n"
         meal_plan += "• Focus on low-carb, high-fiber foods\n"
         meal_plan += "• Include protein with every meal\n"
         meal_plan += "• Stay hydrated with water\n\n"
     elif latest_cgm and latest_cgm < 80:
-        meal_plan += "⚠️ Glucose Management Tips:\n"
+        meal_plan += "Glucose Management Tips:\n"
         meal_plan += "• Include complex carbohydrates\n"
         meal_plan += "• Eat regular meals and snacks\n"
         meal_plan += "• Monitor glucose levels closely\n\n"

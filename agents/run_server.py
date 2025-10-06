@@ -19,8 +19,7 @@ import agents_config
 import database
 import uvicorn
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import StreamingResponse, FileResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Dict, Any, Optional
@@ -36,9 +35,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Mount static files for frontend
-app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Request/Response models
 class AgentRequest(BaseModel):
@@ -60,11 +56,6 @@ def on_startup():
     print("Database initialization complete.")
 
 # Health check endpoint
-@app.get("/")
-async def serve_frontend():
-    """Serve the frontend HTML file"""
-    return FileResponse("static/index.html")
-
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "service": "healthcare-multi-agent"}
@@ -152,13 +143,9 @@ async def get_user_logs(user_id: int):
 
 if __name__ == "__main__":
     print("Starting Healthcare Multi-Agent Server...")
-    
-    # Get port from environment (Railway sets this)
-    port = int(os.getenv("PORT", 8000))
-    
-    print(f"Backend API will be available at: http://0.0.0.0:{port}")
-    print(f"API Documentation: http://0.0.0.0:{port}/docs")
-    print("Make sure to add your GROQ_API_KEY to the environment variables!")
+    print("Frontend will be available at: http://localhost:3000")
+    print("Backend API will be available at: http://localhost:8000")
+    print("API Documentation: http://localhost:8000/docs")
+    print("Make sure to add your GROQ_API_KEY to the .env file!")
     print()
-    
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
