@@ -40,7 +40,7 @@ export default function HomePage() {
   const fetchUserData = async (userId: number) => {
     try {
       // Fetch user logs from backend
-      const response = await axios.get(`http://localhost:8000/users/${userId}/logs`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_AGENT_URL}/users/${userId}/logs`);
       const logs = response.data;
       
       // Separate CGM, mood, and food data
@@ -103,7 +103,7 @@ export default function HomePage() {
     setIsLoading(true);
     
     try {
-      const response = await axios.post('http://localhost:8000/ag-ui-agent', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_AGENT_URL}/ag-ui-agent`, {
         message: currentMessage,
         user_id: currentUserId || null, // Always send user_id, even if null
         session_id: 'demo-session'
@@ -166,7 +166,7 @@ export default function HomePage() {
           
           // Fetch user profile
           try {
-            const profileResponse = await axios.get(`http://localhost:8000/users/${userId}`);
+            const profileResponse = await axios.get(`${process.env.NEXT_PUBLIC_AGENT_URL}/users/${userId}`);
             const profile = profileResponse.data;
             setUserProfile({
               name: `${profile.first_name} ${profile.last_name}`,
@@ -189,7 +189,7 @@ export default function HomePage() {
       // Add error message to chat
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        text: 'Error: Could not connect to the healthcare agent. Make sure the backend is running on port 8000.',
+        text: 'Error: Could not connect to the healthcare agent. Please check your connection and try again.',
         sender: 'agent',
         timestamp: new Date(),
         type: 'error'
